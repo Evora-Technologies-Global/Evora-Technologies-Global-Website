@@ -1,7 +1,11 @@
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/NotFound";
-import { Route, Switch } from "wouter";
+import { Route, Switch, Router as WouterRouter } from "wouter";
+
+// Base path so routing works when hosted under a GitHub Pages subpath.
+// import.meta.env.BASE_URL is "/" in dev and the configured base in prod.
+const ROUTER_BASE = import.meta.env.BASE_URL.replace(/\/$/, "");
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import Home from "./pages/Home";
@@ -11,14 +15,16 @@ import TermsOfService from "./pages/TermsOfService";
 
 function Router() {
   return (
-    <Switch>
-      <Route path={"/"} component={Home} />
-      <Route path={"/privacy"} component={PrivacyPolicy} />
-      <Route path={"/terms"} component={TermsOfService} />
-      <Route path={"/404"} component={NotFound} />
-      {/* Final fallback route */}
-      <Route component={NotFound} />
-    </Switch>
+    <WouterRouter base={ROUTER_BASE}>
+      <Switch>
+        <Route path={"/"} component={Home} />
+        <Route path={"/privacy"} component={PrivacyPolicy} />
+        <Route path={"/terms"} component={TermsOfService} />
+        <Route path={"/404"} component={NotFound} />
+        {/* Final fallback route */}
+        <Route component={NotFound} />
+      </Switch>
+    </WouterRouter>
   );
 }
 

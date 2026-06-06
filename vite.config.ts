@@ -205,7 +205,10 @@ function vitePluginStorageProxy(): Plugin {
 
 const plugins = [react(), tailwindcss(), jsxLocPlugin(), vitePluginManusRuntime(), vitePluginManusDebugCollector(), vitePluginStorageProxy()];
 
-export default defineConfig({
+export default defineConfig(({ command }) => ({
+  // GitHub Pages serves this project repo under a subpath, so the production
+  // build must reference assets relative to that path. Dev keeps "/".
+  base: command === "build" ? "/Evora-Technologies-Global-Website/" : "/",
   plugins,
   resolve: {
     alias: {
@@ -238,4 +241,4 @@ export default defineConfig({
       deny: ["**/.*"],
     },
   },
-});
+}));
